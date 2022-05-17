@@ -5,7 +5,7 @@ console.log('first server');
 // REQUIRE
 const express = require('express');
 
-let data = require ('./data/weather.json');
+let data = require('./data/weather.json');
 
 require('dotenv').config();
 
@@ -31,7 +31,7 @@ app.get('/hello', (request, response) => {
 app.get('/weather', (request, response) => {
 
   //find only returns one object
-  let dataToSend = 'hello!';
+  let dataToSend = data.find(weather => weather.city_name === 'Seattle');
   response.send(dataToSend);
 });
 
