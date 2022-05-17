@@ -5,7 +5,7 @@ console.log('first server');
 // REQUIRE
 const express = require('express');
 
-let data = require ('./data/weather.json');
+let data = require('./data/weather.json');
 
 require('dotenv').config();
 
@@ -29,10 +29,12 @@ app.get('/hello', (request, response) => {
 
 ///**check this to pull in data on weather */
 app.get('/weather', (request, response) => {
-
+  let cityData = request.query.city;
   //find only returns one object
-  let dataToSend = 'hello!';
+  let selectedLocation = data.find(weather => weather.city_name === cityData);
+  let dataToSend = new Weather(selectedLocation);
   response.send(dataToSend);
+  console.log(dataToSend);
 });
 
 //catch all star route
@@ -43,12 +45,13 @@ app.get('*', (request, response) => {
 // ERRORS
 
 // CLASSES
-///***Revisit this */
-// class Weather {
-//   constructor(weatherObject) {
-//     this.city = weatherObject
-//   }
-// }
+class Weather {
+  constructor(weatherObject) {
+    this.city = weatherObject.city_name;
+    this.lon = weatherObject.lon;
+    this.lat = weatherObject.lat;
+  }
+}
 
 // LISTEN
 app.listen(PORT, () => console.log(`listening on port ${PORT}`));
