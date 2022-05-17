@@ -45,11 +45,10 @@ app.get('*', (request, response) => {
 // ERRORS
 
 // CLASSES
-class Weather {
+class Forecast {
   constructor(weatherObject) {
-    this.city = weatherObject.city_name;
-    this.lon = weatherObject.lon;
-    this.lat = weatherObject.lat;
+    this.date = weatherObject.datetime;
+    this.description = weatherObject.weather.description;
   }
 }
 
