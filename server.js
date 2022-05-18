@@ -31,12 +31,16 @@ const PORT = process.env.PORT || 3002;
 
 ///**check this to pull in data on weather */
 app.get('/weather', (request, response) => {
+  try {
   let cityData = request.query.city;
   //find only returns one object
   let selectedLocation = data.find(city => city.city_name.toLowerCase() === cityData.toLowerCase());
   let dataToSend = selectedLocation.data.map(day => new Forecast(day))
   response.send(dataToSend);
-  console.log(dataToSend);
+  } catch (error) {
+    next(error);
+  }
+
 });
 
 //catch all star route
@@ -45,6 +49,9 @@ app.get('*', (request, response) => {
 });
 
 // ERRORS
+app.use((error, request, response, next) => {
+  response.status(500).send(error.message);
+})
 
 // CLASSES
 class Forecast {
