@@ -19,9 +19,9 @@ app.use(cors());
 const PORT = process.env.PORT || 3002;
 
 // ROUTES
-// app.get('/', (request, response) => {
-//   response.send('hello from the server')
-// });
+app.get('/', (request, response) => {
+  response.send('hello from the server')
+});
 
 // app.get('/hello', (request, response) => {
 //   let firstName = request.query.name;
@@ -30,7 +30,7 @@ const PORT = process.env.PORT || 3002;
 // });
 
 ///**check this to pull in data on weather */
-app.get('/weather', (request, response) => {
+app.get('/weather', (request, response, next) => {
   try {
   let cityData = request.query.city;
   //find only returns one object
