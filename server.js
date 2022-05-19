@@ -4,10 +4,9 @@ console.log('first server');
 
 // REQUIRE
 const express = require('express');
-
-let data = require('./data/weather.json');
-
+// let data = require('./data/weather.json');
 const cors = require('cors');
+const { default: axios } = require('axios');
 
 require('dotenv').config();
 
@@ -29,19 +28,31 @@ app.get('/', (request, response) => {
 //   response.send(`hello! ${firstName} ${lastName}`);
 // });
 
-///**check this to pull in data on weather */
-app.get('/weather', (request, response, next) => {
-  try {
-  let cityData = request.query.city;
-  //find only returns one object
-  let selectedLocation = data.find(city => city.city_name.toLowerCase() === cityData.toLowerCase());
-  let dataToSend = selectedLocation.data.map(day => new Forecast(day))
+////*update with lon and lan
+app.get('/weather', async (request, response)=> {
+  // let cityData = request.query.city;
+  let lon = request.query.lon;
+  let lat = request.query.lat;
+  let url = `http://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.WEATHER_API_KEY}&units=I&days=7&lat=${lat}&lon=${lon}`;
+  let results = await axios.get(url);
+  // let selectedLocation = results.data.filter((lat, lon) => {
+  // })
+  let dataToSend = results.data.map(day => new Forecast(day))
   response.send(dataToSend);
-  } catch (error) {
-    next(error);
-  }
-
 });
+
+// app.get('/weather', (request, response, next) => {
+//   try {
+//   let cityData = request.query.city;
+//   //find only returns one object
+//   let selectedLocation = data.find(city => city.city_name.toLowerCase() === cityData.toLowerCase());
+//   let dataToSend = selectedLocation.data.map(day => new Forecast(day))
+//   response.send(dataToSend);
+//   } catch (error) {
+//     next(error);
+//   }
+
+// });
 
 //catch all star route
 app.get('*', (request, response) => {
