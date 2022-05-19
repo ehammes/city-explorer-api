@@ -4,7 +4,7 @@ console.log('first server');
 
 // REQUIRE
 const express = require('express');
-// let data = require('./data/weather.json');
+let data = require('./data/weather.json');
 const cors = require('cors');
 const { default: axios } = require('axios');
 require('dotenv').config();
