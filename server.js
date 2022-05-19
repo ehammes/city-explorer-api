@@ -6,6 +6,7 @@ console.log('first server');
 const express = require('express');
 let data = require('./data/weather.json');
 const cors = require('cors');
+const { default: axios } = require('axios');
 require('dotenv').config();
 
 // USE
@@ -22,6 +23,20 @@ app.get('/', (request, response) => {
 //   let firstName = request.query.name;
 //   let lastName = request.query.lastName;
 //   response.send(`hello! ${firstName} ${lastName}`);
+// });
+
+
+////*update with lon and lan
+// app.get('/weather', async (request, response)=> {
+//   // let cityData = request.query.city;
+//   let lon = request.query.lon;
+//   let lat = request.query.lat;
+//   let url = `http://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.WEATHER_API_KEY}&units=I&days=7&lat=${lat}&lon=${lon}`;
+//   let results = await axios.get(url);
+//   // let selectedLocation = results.data.filter((lat, lon) => {
+//   // })
+//   let dataToSend = results.data.data.map(day => new Forecast(day))
+//   response.send(dataToSend);
 // });
 
 app.get('/weather', (request, response, next) => {
