@@ -4,18 +4,13 @@ console.log('first server');
 
 // REQUIRE
 const express = require('express');
-
 let data = require('./data/weather.json');
-
 const cors = require('cors');
-
 require('dotenv').config();
 
 // USE
 const app = express();
-
 app.use(cors());
-
 const PORT = process.env.PORT || 3002;
 
 // ROUTES
@@ -29,7 +24,6 @@ app.get('/', (request, response) => {
 //   response.send(`hello! ${firstName} ${lastName}`);
 // });
 
-///**check this to pull in data on weather */
 app.get('/weather', (request, response, next) => {
   try {
   let cityData = request.query.city;
@@ -40,7 +34,6 @@ app.get('/weather', (request, response, next) => {
   } catch (error) {
     next(error);
   }
-
 });
 
 //catch all star route
