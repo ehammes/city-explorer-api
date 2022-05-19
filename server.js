@@ -7,14 +7,11 @@ const express = require('express');
 // let data = require('./data/weather.json');
 const cors = require('cors');
 const { default: axios } = require('axios');
-
 require('dotenv').config();
 
 // USE
 const app = express();
-
 app.use(cors());
-
 const PORT = process.env.PORT || 3002;
 
 // ROUTES
@@ -27,6 +24,7 @@ app.get('/', (request, response) => {
 //   let lastName = request.query.lastName;
 //   response.send(`hello! ${firstName} ${lastName}`);
 // });
+
 
 ////*update with lon and lan
 // app.get('/weather', async (request, response)=> {
@@ -51,7 +49,6 @@ app.get('/weather', (request, response, next) => {
   } catch (error) {
     next(error);
   }
-
 });
 
 //catch all star route
