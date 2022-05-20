@@ -23,7 +23,7 @@ app.get('/weather', async (request, response, next) => {
     let url = `http://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.WEATHER_API_KEY}&units=I&days=7&lat=${lat}&lon=${lon}`;
     let results = await axios.get(url);
     let dataToSend = results.data.data.map(day => new Forecast(day))
-    response.send(dataToSend);
+    response.status(200).send(dataToSend);
   } catch (error) {
     next(error);
   }
@@ -34,9 +34,8 @@ app.get('/movies', async (request, response, next) => {
     let cityName = request.query.city;
     let movieURL = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${cityName}`;
     let movieResults = await axios.get(movieURL);
-    // console.log(movieURL);
-    let resultsToSend = movieResults.results.map(movieDetails => new Movie(movieDetails))
-    response.send(resultsToSend);
+    let resultsToSend = movieResults.data.results.map(movieDetails => new Movie(movieDetails))
+    response.status(200).send(resultsToSend);
   } catch (error) {
     next(error);
   }
@@ -68,6 +67,7 @@ class Movie {
     this.vote_count = movieObject.vote_count;
     this.popularity = movieObject.popularity;
     this.release_date = movieObject.release_date;
+    this.poster_path = movieObject.poster_path ? 'https://image.tmdb.org/t/p/w500' + movieObject.poster_path : '';
   }
 }
 
