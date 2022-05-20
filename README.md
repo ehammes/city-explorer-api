@@ -6,7 +6,7 @@
 ## WRCC Diagrams
 
 May 17, 2022
-![](/public/img/051722.jpeg) in collaboration with Vinny Shipley
+![](./img/051722.jpeg) in collaboration with Vinny Shipley
 
 May 16, 2022
-![](/public/img/051622.jpeg) in collaboration with Guy Farley
+![](./img/051622.jpeg) in collaboration with Guy Farley
