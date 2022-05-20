@@ -3,8 +3,10 @@
 // REQUIRE
 const express = require('express');
 const cors = require('cors');
-const { default: axios } = require('axios');
 require('dotenv').config();
+const getMovies = require ('./modules/movies')
+const getWeather = require ('./modules/weather')
+
 
 // USE
 const app = express();
@@ -16,34 +18,13 @@ app.get('/', (request, response) => {
   response.send('hello from the server')
 });
 
-app.get('/weather', async (request, response, next) => {
-  try {
-    let lat = request.query.lat;
-    let lon = request.query.lon;
-    let url = `http://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.WEATHER_API_KEY}&units=I&days=7&lat=${lat}&lon=${lon}`;
-    let results = await axios.get(url);
-    let dataToSend = results.data.data.map(day => new Forecast(day))
-    response.status(200).send(dataToSend);
-  } catch (error) {
-    next(error);
-  }
-});
+app.get('/weather', getWeather);
 
-app.get('/movies', async (request, response, next) => {
-  try {
-    let cityName = request.query.city;
-    let movieURL = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${cityName}`;
-    let movieResults = await axios.get(movieURL);
-    let resultsToSend = movieResults.data.results.map(movieDetails => new Movie(movieDetails))
-    response.status(200).send(resultsToSend);
-  } catch (error) {
-    next(error);
-  }
-});
+app.get('/movies', getMovies);
 
 //catch all star route
 app.get('*', (request, response) => {
-  response.send('The request could not be found')
+  response.status(404).send('The request could not be found')
 });
 
 // ERRORS
@@ -52,24 +33,9 @@ app.use((error, request, response, next) => {
 })
 
 // CLASSES
-class Forecast {
-  constructor(weatherObject) {
-    this.datetime = weatherObject.datetime;
-    this.description = weatherObject.weather.description;
-  }
-}
 
-class Movie {
-  constructor(movieObject) {
-    this.title = movieObject.title;
-    this.overview = movieObject.overview;
-    this.vote_average = movieObject.vote_average;
-    this.vote_count = movieObject.vote_count;
-    this.popularity = movieObject.popularity;
-    this.release_date = movieObject.release_date;
-    this.poster_path = movieObject.poster_path ? 'https://image.tmdb.org/t/p/w500' + movieObject.poster_path : '';
-  }
-}
+
+
 
 // LISTEN
 app.listen(PORT, () => console.log(`listening on port ${PORT}`));
