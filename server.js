@@ -5,24 +5,30 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const getWeather = require ('./modules/weather')
+const getMovies = require ('./modules/movies')
 
 // USE
 const app = express();
 app.use(cors());
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3001;
 
 // ROUTES
 app.get('/', (request, response) => {
   response.send('hello from the server!')
 });
 
-app.get('/weather', getWeather);
+app.get('/weather', weatherHandler);
+
+app.get('/movies', getMovies);
 
 function weatherHandler(request, response) {
   const { lat, lon } = request.query;
-  weather(lat, lon).then(summaries => response.send(summaries)).catch((error) => {
+  // console.log(lat);
+  getWeather(lat, lon)
+    .then(summaries => response.status(200).send(summaries))
+    .catch((error) => {
     console.error(error);
-    response.status(200).send('Sorry. Something went wrong!')
+    response.status(500).send('Sorry. Something went wrong!')
   });
 }  
 
